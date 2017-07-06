@@ -10,14 +10,17 @@ public class BaggerBewegung : MonoBehaviour {
 	public GameObject GameObjectStiel;
 	public GameObject GameObjectLöffel;
 
+	Bagger_GUI bagger_GUI;
+
 	//Bagger Variablen
-	float W_Rotation = 0, W_Ausleger = 0, W_Stiel = 0, W_Löffel = 0;
+	float W_Rotation = 0, W_Ausleger = 0, W_Löffelstiel = 0, W_Löffel = 0;
 	BaggerLibrary.Bagger bagger;
 
 	// Use this for initialization
 	void Start () {
 		Debug.Log("Start: Bagger Skript");
 
+		bagger_GUI = new Bagger_GUI ();
 		bagger = new BaggerLibrary.Bagger()
 		{
 			Länge_Ausleger = 300,
@@ -39,14 +42,14 @@ public class BaggerBewegung : MonoBehaviour {
 	{
 		W_Rotation = bagger.Winkel_Rotation;
 		W_Ausleger = bagger.Winkel_Ausleger;
-		W_Stiel = bagger.Winkel_Löffelstiel;
+		W_Löffelstiel = bagger.Winkel_Löffelstiel;
 		W_Löffel = -bagger.Winkel_Löffel;
 
-		Debug.Log(string.Format("New Values...ROT:{0}, Aus:{1}, Sti:{2}, Löf:{3}",
+		/*Debug.Log(string.Format("New Values...ROT:{0}, Aus:{1}, Sti:{2}, Löf:{3}",
 			W_Rotation,
 			W_Ausleger,
 			W_Stiel,
-			W_Löffel));
+			W_Löffel));*/
 	}
 
 	private void Bagger_OnLog(object sender, System.EventArgs e)
@@ -57,16 +60,17 @@ public class BaggerBewegung : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
+		bagger_GUI.Update ();
 		
-		GameObjectBagger.transform.rotation = Quaternion.Euler (0, bagger.Winkel_Rotation, 0);
-		GameObjectAusleger.transform.localRotation = Quaternion.Euler (0, 0, bagger.Winkel_Ausleger);
-		GameObjectStiel.transform.localRotation = Quaternion.Euler (0, 0, bagger.Winkel_Löffelstiel);
-		GameObjectLöffel.transform.localRotation = Quaternion.Euler (0, 0, bagger.Winkel_Löffel);
+		GameObjectBagger.transform.rotation = Quaternion.Euler (0, W_Rotation, 0);
+		GameObjectAusleger.transform.localRotation = Quaternion.Euler (0, 0, W_Ausleger);
+		GameObjectStiel.transform.localRotation = Quaternion.Euler (0, 0, W_Löffelstiel);
+		GameObjectLöffel.transform.localRotation = Quaternion.Euler (0, 0, W_Löffel);
 
 		//bagger.Move(new Leap.Vector(0, 0.1f, 0.1f), 200, 200);
 
 		if (Input.GetKeyDown (KeyCode.I)) {
-			Debug.Log (string.Format ("rot:{0} aus:{1} sti:{2} löf:{3}", W_Rotation, W_Ausleger, W_Stiel, W_Löffel));
+			Debug.Log (string.Format ("rot:{0} aus:{1} sti:{2} löf:{3}", W_Rotation, W_Ausleger, W_Löffelstiel, W_Löffel));
 		}
 
 		if (Input.GetKeyDown (KeyCode.M)) {
@@ -84,8 +88,28 @@ public class BaggerBewegung : MonoBehaviour {
 
 	void OnGUI()
 	{
-		GUI.Label (new Rect(10, 10, 200, 200), string.Format ("Rotation:\t{0:N2}\nAusleger:\t{1:N2}\nStiel:\t{2:N2}\nLöffel:\t{3:N2}",
-			bagger.Winkel_Rotation, bagger.Winkel_Ausleger, bagger.Winkel_Löffelstiel, bagger.Winkel_Löffel));
+		int HandCount = 0;
+		string message = "";
+		float pinch = 0f;
+
+		pinch = bagger.LeapData.RightPinchTime;
+		HandCount = bagger.LeapData.HandCount;
+
+		if (HandCount == 0) {
+			message = "Keine Hände erkannt!";
+		} else if (HandCount > 2 || (bagger.LeapData.RightHand == null && bagger.LeapData.LeftHand == null)) {
+			message = "Bitte halen Sie nur 1 Linke und 1 Rechte Hand in das Sichtfeld";
+		} else if (bagger.LeapData.LeftHand != null) {
+			message = "Ne, die rechte Hand...";
+		} else if (pinch == 0) {
+			message = "Bewegen Sie den Bagger\nmithilfes des Pinzettengriffes";
+		} else {
+			message = "Super und jetzt beweg sie";
+		}
+
+		bagger_GUI.ZeigeHandStatus (HandCount, message);
+		bagger_GUI.ZeigeBaggerWinkel (W_Rotation, W_Ausleger, W_Löffelstiel, W_Löffel);
+		bagger_GUI.ZeigeFPS ();
 	}
 
 	// Stopt den Leap.Controller um einen Absturz der Simulation zu verhindern

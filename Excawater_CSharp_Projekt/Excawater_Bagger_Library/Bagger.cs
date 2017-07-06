@@ -285,15 +285,14 @@ namespace BaggerLibrary
                 return;
             }
             arbeitend = true;
-
-            Say("Trigger Move");
+            
             Move(leapData.RightMovement, leapData.RightPinchTime, leapData.RightGrabTime);
             Rotate(leapData.RightMovement, leapData.RightPinchTime, leapData.RightGrabTime);
             Grab(leapData.RightHand != null ? leapData.RightHand.GrabStrength : 0f, leapData.RightGrabTime);
 
             if (BaggerData != null)
                 BaggerData("", EventArgs.Empty);
-            Say("Trigger has Trigged");
+
             arbeitend = false;
         }
 
