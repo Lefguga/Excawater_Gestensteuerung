@@ -92,8 +92,14 @@ public class BaggerBewegung : MonoBehaviour {
 		string message = "";
 		float pinch = 0f;
 
-		pinch = bagger.LeapData.RightPinchTime;
-		HandCount = bagger.LeapData.HandCount;
+		try {
+			pinch = bagger.LeapData.RightPinchTime;
+			HandCount = bagger.LeapData.HandCount;
+		}
+		catch {
+			Debug./*LogError*/Log ("LeapMotion not registrated");
+			Application.Quit ();
+		}
 
 		if (HandCount == 0) {
 			message = "Keine Hände erkannt!";

@@ -8,9 +8,18 @@ public class Kamerawechsel : MonoBehaviour {
 	public Camera[] Kamera = new Camera[6];
 	//public Camera Kamera2, Kamera3, Kamera4, Kamera5, Kamera6;
 
+	string guiString;
+	GUIStyle style;
+
 	// Use this for initialization
 	void Start () {
-		
+		guiString = "Kamera: 1  2  3  4  5  6";
+
+		style = new GUIStyle();
+		style.alignment = TextAnchor.UpperLeft;
+		style.fontSize = (int)(Screen.height * 0.03f);
+		style.normal.textColor = new Color (255.0f, 255.0f, 200.5f, 1.0f);
+
 	}
 	
 	// Update is called once per frame
@@ -39,10 +48,22 @@ public class Kamerawechsel : MonoBehaviour {
 
 	void ActivateCameras(int number)
 	{
+		guiString = "Kamera: ";
 		if (number > 0 && number <= Kamera.Length)
 			for (int id = 0; id < Kamera.Length; id++) {
-				if (Kamera [id] != null)
+				if (Kamera [id] != null) {
 					Kamera [id].enabled = (id + 1) == number;
+					guiString += string.Format ("{1}{0}{2} ", (id + 1), Kamera[id].enabled ? ">>" : " ", Kamera[id].enabled ? "<<" : " ");
+				}
 			}
+	}
+
+	void OnGUI()
+	{
+		int w = Screen.width;
+		int h = Screen.height;
+		Rect rect = new Rect(w * 0.6f, h * 0.97f, w * 0.05f, h * 0.03f);
+
+		GUI.Label (rect, guiString, style);
 	}
 }
