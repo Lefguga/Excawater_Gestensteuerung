@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="LeapCSharp.NET3.5">
       <HintPath>..\..\LeapMotionLibrary\LeapCSharp.NET3.5.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,7 +46,14 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /yrsi "..\..\LeapMotionLibrary\*" "$(TargetDir)"</PostBuildEvent>
+    <PostBuildEvent>;Copy LeapC.dll to Output
+xcopy /yri "$(ProjectDir)..\..\LeapMotionLibrary\x86_64\Leap*" "$(TargetDir)"
+if $(ConfigurationName) == Release (
+;Copy BaggerLib to Unity
+xcopy /yr "$(TargetDir)" "$(ProjectDir)..\..\Excawater_Unity_Projekt\Assets\Plugins\"
+;Copy LeapLib to Unity
+xcopy /yrsi "$(ProjectDir)..\..\LeapMotionLibrary\*" "$(ProjectDir)..\..\Excawater_Unity_Projekt\Assets\Plugins\"
+)</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>

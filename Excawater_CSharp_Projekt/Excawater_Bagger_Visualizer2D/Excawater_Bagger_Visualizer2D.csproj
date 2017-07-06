@@ -92,7 +92,7 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy /yr "$(ProjectDir)..\..\LeapMotionLibrary\Leap*" "$(TargetDir)"
+xcopy /yr "$(ProjectDir)..\..\LeapMotionLibrary\x86_64\Leap*" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
