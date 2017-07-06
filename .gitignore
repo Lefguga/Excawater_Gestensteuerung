@@ -51,7 +51,7 @@ artifacts/
 *_p.c
 *_i.h
 *.ilk
-*.meta
+Excawater_CSharp_Projekt/*.meta
 *.obj
 *.pch
 *.pdb
