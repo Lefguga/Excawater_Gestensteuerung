@@ -5,7 +5,7 @@ using Leap;
 namespace BaggerLibrary
 {
 
-    public delegate void NewValuesEventHandler(object sender, EventArgs e);
+    public delegate void NewValuesEventHandler();
 
     /// <summary>
     /// Gibt Standartwerte des Leapmotion Sensors zurück
@@ -17,6 +17,12 @@ namespace BaggerLibrary
         
         /// <summary>Leap Controller</summary>
         Controller leapController;
+
+        /// <summary></summary>
+        BackgroundWorker updater = new BackgroundWorker();
+
+        /// <summary></summary>
+        public int Interval { get; set; }
 
         /// <variables></variables>
         /// <summary>Array aller erkannten Hände</summary>
@@ -155,28 +161,52 @@ namespace BaggerLibrary
             //erlaubt das aktualisieren im Hintergrund
             leapController.SetPolicy(Controller.PolicyFlag.POLICY_BACKGROUND_FRAMES);
 
-            leapController.FrameReady += LeapController_FrameReady;
+            //leapController.FrameReady += LeapController_FrameReady;
+            updater.DoWork += Updater_DoWork;
+            updater.RunWorkerCompleted += Updater_RunWorkerCompleted;
         }
 
-        public void Pull()
+        /// <summary>
+        /// Wartet das Angegebene Interval ab
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Updater_DoWork(object sender, DoWorkEventArgs e)
         {
-            LeapController_FrameReady(null, null);
+            System.Threading.Thread.Sleep(Interval);
+        }
+
+        private void Updater_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            PullData();
+            updater.RunWorkerAsync();
         }
 
         private void LeapController_FrameReady(object sender, FrameEventArgs e)
         {
-            //Frame f = leapController.Frame();
-            hands = leapController.Frame().Hands;
-            fps = leapController.Frame().CurrentFramesPerSecond;
-
-            LastUpdate = DateTime.Now;
-            GetHands();
-
-            //Trigger Event
-            if (NewValues != null)
-                NewValues(this, e);
+            PullData();
         }
         
+        /// <summary>
+        /// Liest den nächsten Frame vom Leap Motion Controller und sammelt Daten
+        /// </summary>
+        public void PullData()
+        {
+            if (leapController.IsConnected)
+            {
+                //Frame f = leapController.Frame();
+                hands = leapController.Frame().Hands;
+                fps = leapController.Frame().CurrentFramesPerSecond;
+
+                LastUpdate = DateTime.Now;
+                GetHands();
+
+                //Trigger Event
+                if (NewValues != null)
+                    NewValues();
+            }
+        }
+
         /// <summary>
         /// Startet auslesen
         /// </summary>
@@ -184,6 +214,7 @@ namespace BaggerLibrary
         public void Start()
         {
             leapController.StartConnection();
+            updater.RunWorkerAsync();
         }
 
         /// <summary>

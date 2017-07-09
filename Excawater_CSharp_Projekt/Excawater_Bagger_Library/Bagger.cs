@@ -3,8 +3,8 @@ using Leap;
 
 namespace BaggerLibrary
 {
-    public delegate void NewBaggerData(object sender, EventArgs e);
-    public delegate void Logger(object sender, EventArgs e);
+    public delegate void NewBaggerData();
+    public delegate void Logger(object sender);
 
     public class Bagger
     {
@@ -191,7 +191,7 @@ namespace BaggerLibrary
 
         public void Pull()
         {
-            leapData.Pull();
+            leapData.PullData();
         }
 
         public void Start()
@@ -205,7 +205,7 @@ namespace BaggerLibrary
             Say("Stop");
             leapData.Stop();
             if (BaggerData != null)
-                BaggerData("", EventArgs.Empty);
+                BaggerData();
         }
 
         /// <summary>
@@ -276,7 +276,7 @@ namespace BaggerLibrary
         /// Triggert das Event
         /// </summary>
         bool arbeitend = false;
-        private void ValuesTriggered(object sender, EventArgs e)
+        private void ValuesTriggered()
         {
             Say("Trigger");
             if (arbeitend)
@@ -291,7 +291,7 @@ namespace BaggerLibrary
             Grab(leapData.RightHand != null ? leapData.RightHand.GrabStrength : 0f, leapData.RightGrabTime);
 
             if (BaggerData != null)
-                BaggerData("", EventArgs.Empty);
+                BaggerData();
 
             arbeitend = false;
         }
@@ -299,7 +299,7 @@ namespace BaggerLibrary
         private void Say(string v)
         {
             if (OnLog != null)
-                OnLog("Library: " + v, EventArgs.Empty);
+                OnLog("Library: " + v);
         }
 
     }

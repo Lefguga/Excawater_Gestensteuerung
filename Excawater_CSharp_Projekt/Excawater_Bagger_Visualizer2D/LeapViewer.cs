@@ -64,13 +64,13 @@ namespace LeapMotion
             bagger.Pull();
         }
 
-        private void RefreshValue(object sender, EventArgs e)
+        private void RefreshValue()
         {
             if (InvokeRequired)
             {
                 try
                 {
-                    Invoke((Action)(() => { RefreshValue(sender, e); }));
+                    Invoke((Action)(() => { RefreshValue(); }));
                 }
                 catch { }
             }
