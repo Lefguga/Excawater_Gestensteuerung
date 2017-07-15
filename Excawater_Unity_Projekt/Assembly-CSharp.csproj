@@ -71,19 +71,10 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
  </Reference>
  <Reference Include="BaggerLibrary">
- <HintPath>C:/Users/Sebastian/Documents/GitHub/Excawater_Gestensteuerung/Excawater_Unity_Projekt/Assets/Plugins/BaggerLibrary.dll</HintPath>
+ <HintPath>D:/Users/Andi/Documents/GitHub/Excawater_Gestensteuerung/Excawater_Unity_Projekt/Assets/Plugins/BaggerLibrary.dll</HintPath>
  </Reference>
  <Reference Include="LeapCSharp.NET3.5">
- <HintPath>C:/Users/Sebastian/Documents/GitHub/Excawater_Gestensteuerung/Excawater_Unity_Projekt/Assets/Plugins/LeapCSharp.NET3.5.dll</HintPath>
- </Reference>
- <Reference Include="Mono.Cecil">
- <HintPath>C:/Program Files/Unity/Editor/Data/Managed/Mono.Cecil.dll</HintPath>
- </Reference>
- <Reference Include="UnityEditor.iOS.Extensions.Xcode">
- <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
- </Reference>
- <Reference Include="UnityEditor.iOS.Extensions.Common">
- <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Common.dll</HintPath>
+ <HintPath>D:/Users/Andi/Documents/GitHub/Excawater_Gestensteuerung/Excawater_Unity_Projekt/Assets/Plugins/LeapCSharp.NET3.5.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
